@@ -1,0 +1,27 @@
+# API
+apiVersion: skaffold/v2beta28
+kind: Config
+metadata:
+  name: api
+build:
+  artifacts:
+  - image: docker-registry.local:5000/skaffold-monorepo-toy-api
+    context: services/fastapi-api
+    docker:
+      dockerfile: Dockerfile
+    hooks:
+      after:
+        - command: [ "sh", "-c", "./scripts/skaffold/dump-poetry-lock.sh" ]
+          os: [ darwin, linux ]
+  local:
+    useBuildkit: true
+    push: true
+deploy:
+  kustomize:
+    paths:
+      - services/fastapi-api/overlay/development
+portForward:
+- resourceType: service
+  namespace: default
+  resourceName: dev-fastapi-api
+  port: 8000

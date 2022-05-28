@@ -2,19 +2,26 @@ version: '3'
 
 vars:
   PROJECT_NAME: skaffold-monorepo-toy
+  BASE_DIR:
+    sh: git rev-parse --show-toplevel
 
 tasks:
-  minikube:up:
-    desc: Start minikube for this project
+  dev:setup:
+    desc: Setup dev environment (you only need this once!)
     cmds:
-      - minikube start --profile {{.PROJECT_NAME}}
+      - PROJECT_NAME={{.PROJECT_NAME}} BASE_DIR={{.BASE_DIR}} scripts/dev/setup.sh
 
-  minikube:down:
-    desc: Teardown minikube for this project
+  dev:delete:
+    desc: Delete dev environment - once you ran this, you will need to setup again should you want to develop again.
     cmds:
-      - minikube stop --profile {{.PROJECT_NAME}}
+      - PROJECT_NAME={{.PROJECT_NAME}} BASE_DIR={{.BASE_DIR}} scripts/dev/delete.sh
 
-  dev:shell:
-    desc: Opens a new shell for local development
+  dev:start:
+    desc: Start dev environment
     cmds:
-      - PROJECT_NAME={{.PROJECT_NAME}} scripts/dev/shell.sh
+      - PROJECT_NAME={{.PROJECT_NAME}} BASE_DIR={{.BASE_DIR}} scripts/dev/start.sh
+
+  dev:teardown:
+    desc: Teardown dev environment
+    cmds:
+      - PROJECT_NAME={{.PROJECT_NAME}} BASE_DIR={{.BASE_DIR}} scripts/dev/teardown.sh

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-api
+  labels:
+    app: fastapi-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastapi-api
+  template:
+    metadata:
+      labels:
+        app: fastapi-api
+    spec:
+      containers:
+      - name: fastapi-api
+        image: docker-registry.local:5000/skaffold-monorepo-toy-api
+        envFrom:
+          - configMapRef:
+              name: fastapi-api-config

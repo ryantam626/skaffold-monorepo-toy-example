@@ -8,7 +8,7 @@ This is only for personal learning purposes.
 
 ## [Docker](https://docs.docker.com/get-docker/)
 
-Containerisation tooling.
+Containerisation tooling. You need at least Docker v20.10.4 for this to work!
 
 ## [Skaffold](https://skaffold.dev/)
 
@@ -26,20 +26,12 @@ curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffo
 sudo install skaffold /usr/local/bin/
 ```
 
-## [Minikube](https://minikube.sigs.k8s.io/docs/)
+## [k3d](https://k3d.io/)
 
-Local k8s offering.
-
-Install with the following command:-
+Tiny k8s for local development.
 
 ```bash
-# For Linux x86_64 (amd64)
-curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && \
-sudo install minikube-linux-amd64 /usr/local/bin/minikube
-
-# For macOS on x86_64 (amd64)
-curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64 && \
-sudo install minikube-darwin-amd64 /usr/local/bin/minikube
+wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 ```
 
 ## [Kubectl](https://kubernetes.io/docs/tasks/tools/)
@@ -47,7 +39,6 @@ sudo install minikube-darwin-amd64 /usr/local/bin/minikube
 Tool to control k8s.
 
 Just follow the instruction on the page.
-
 
 ## [Task](https://taskfile.dev/#/installation)
 
@@ -62,3 +53,13 @@ For autocomplete:-
 ## [fzf](https://github.com/junegunn/fzf)
 
 A command line fuzzy finder. Used in some scripts within the repo.
+
+## [jq](https://stedolan.github.io/jq/download/)
+
+Need this to process JSON blobs in scripts. 
+
+# Short description of repo
+
+A monorepo that integrates k3d, skaffold, kustomize to provide a local developement environment.
+
+## Why docker registry

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fastapi-api-config
+  labels:
+    app: fastapi-api
+data:
+  SECRET_KEY: 558BGdwZAgW3URgS228BGdwZAgW3URgS
+  SENTRY_DSN: ""
+  POSTGRES_SERVER: db
+  POSTGRES_USER: db
+  POSTGRES_PASSWORD: db
+  POSTGRES_DB: db
