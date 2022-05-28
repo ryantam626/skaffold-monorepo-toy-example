@@ -57,3 +57,8 @@ For autocomplete:-
 
 - Zsh users - [here](https://github.com/sawadashota/go-task-completions).
 - Bash users - [here](https://github.com/bfarayev/task/blob/feature/autocomplete/completion/task.bash).
+
+
+## [fzf](https://github.com/junegunn/fzf)
+
+A command line fuzzy finder. Used in some scripts within the repo.
