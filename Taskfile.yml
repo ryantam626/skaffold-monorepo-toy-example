@@ -1,0 +1,20 @@
+version: '3'
+
+vars:
+  PROJECT_NAME: skaffold-monorepo-toy
+
+tasks:
+  minikube:up:
+    desc: Start minikube for this project
+    cmds:
+      - minikube start --profile {{.PROJECT_NAME}}
+
+  minikube:down:
+    desc: Teardown minikube for this project
+    cmds:
+      - minikube stop --profile {{.PROJECT_NAME}}
+
+  dev:shell:
+    desc: Opens a new shell for local development
+    cmds:
+      - PROJECT_NAME={{.PROJECT_NAME}} scripts/dev/shell.sh
