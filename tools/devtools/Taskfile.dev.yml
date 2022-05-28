@@ -1,0 +1,31 @@
+version: '3'
+
+vars:
+  BASE_DIR:
+    sh: git rev-parse --show-toplevel
+  DEVTOOLS_DIR:
+    sh: echo "{{.BASE_DIR}}/tools/devtools"
+  CURDIR:
+    sh: pwd
+
+tasks:
+  shell:
+    desc: Obtain a shell in running pod
+    interactive: true
+    cmds:
+      - POD_PATTERN=$(jq -r '."pod-pattern"' {{.CURDIR}}/devtool.json) {{.DEVTOOLS_DIR}}/pod-exec.sh bash
+
+  format:
+    desc: Run formatters in running pod
+    cmds:
+      - POD_PATTERN=$(jq -r '."pod-pattern"' {{.CURDIR}}/devtool.json) {{.DEVTOOLS_DIR}}/pod-exec.sh /scripts/format.sh
+
+  lint:
+    desc: Run linters in running pod
+    cmds:
+      - POD_PATTERN=$(jq -r '."pod-pattern"' {{.CURDIR}}/devtool.json) {{.DEVTOOLS_DIR}}/pod-exec.sh /scripts/lint.sh
+
+  test:
+    desc: Run tests in running pod
+    cmds:
+      - POD_PATTERN=$(jq -r '."pod-pattern"' {{.CURDIR}}/devtool.json) {{.DEVTOOLS_DIR}}/pod-exec.sh /scripts/test.sh

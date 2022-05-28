@@ -60,6 +60,39 @@ Need this to process JSON blobs in scripts.
 
 # Short description of repo
 
-A monorepo that integrates k3d, skaffold, kustomize to provide a local developement environment.
+A monorepo that integrates k3d, skaffold, kustomize to provide a local developement environment and more.
 
-## Why docker registry
+We use k3d to manage k3s cluster with docker, so we minimise our footprint on the host machine, lest the host machine already have some critical k8s-related infra there.
+
+We manage a docker registry on the side for this k3s cluster because this improves the image reload cycle drastically, since we no longer have to load the entire image into the cluster every time we an image - just the changed layers are needed.
+
+We mount the repo root onto a predictable path on the host, so we can volume mount for development purposes, this will be handy when you need to propagate changes from pods onto host, such as times when you install packages in the pod or ran a formatter within a pod.
+
+We use skaffold to simplify our devops tooling, it provides a lot of things (and things I have still yet to discover I am sure), for example:-
+
+- Sensible tagging out of the box
+- Image hot reload
+
+We use kustomize because it looks like a good way of doing k8s manifest in a relatively pain free way, but it doesn't come with templating - perhaps this will come back and plague us later?
+
+## Project layout 
+
+To be documented when more are added.
+
+# How do I...
+
+## Spin up a working development environment
+
+```bash
+task dev:start  # Ensure docker registry is up, k3s cluster is up and kube-context is correct
+skaffold dev    # Build all images, apply k8s manifests, repeat when source changes
+```
+
+## Obtain a shell in a running pod
+
+Either you find the pod name yourself and exec bash, or use the following in the service/job dir, for example, to get a shell on the pod running our API,
+
+```bash
+cd services/fastapi-api
+task dev:shell
+```
