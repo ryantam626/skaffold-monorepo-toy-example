@@ -47,3 +47,13 @@ sudo install minikube-darwin-amd64 /usr/local/bin/minikube
 Tool to control k8s.
 
 Just follow the instruction on the page.
+
+
+## [Task](https://taskfile.dev/#/installation)
+
+A task runner written in Go, follow instruction on the page.
+
+For autocomplete:-
+
+- Zsh users - [here](https://github.com/sawadashota/go-task-completions).
+- Bash users - [here](https://github.com/bfarayev/task/blob/feature/autocomplete/completion/task.bash).
