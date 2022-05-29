@@ -1,4 +1,6 @@
 {
   "pod-pattern": "dev-fastapi-api-.*",
-  "skaffold-module": "api"
+  "skaffold": {
+    "module": "api"
+  }
 }

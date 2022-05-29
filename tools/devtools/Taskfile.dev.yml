@@ -33,4 +33,4 @@ tasks:
   sleep:
     desc: Run a infinitely sleeping pod managed by skaffold
     cmds:
-      - cd {{.BASE_DIR}} && skaffold dev -p dev-sleep -m $(jq -r '."skaffold-module"' {{.CURDIR}}/devtool.json)
+      - cd {{.BASE_DIR}} && skaffold dev -p dev-sleep -m $(jq -r '.skaffold.module' {{.CURDIR}}/devtool.json)
