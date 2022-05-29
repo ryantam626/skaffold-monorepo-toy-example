@@ -28,3 +28,10 @@ portForward:
   namespace: default
   resourceName: dev-fastapi-api
   port: 8000
+
+profiles:
+  - name: dev-sleep
+    patches:
+      - op: replace
+        path: /deploy/kustomize/paths/0
+        value: services/fastapi-api/overlay/development-sleep
