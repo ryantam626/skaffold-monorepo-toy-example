@@ -19,6 +19,7 @@ tasks:
     desc: Run formatters in running pod
     cmds:
       - POD_PATTERN=$(jq -r '."podPattern"' {{.CURDIR}}/devtool.json) {{.DEVTOOLS_DIR}}/pod-exec.sh /scripts/format.sh
+      - task dev:reverse-file-sync
 
   lint:
     desc: Run linters in running pod
