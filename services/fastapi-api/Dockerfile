@@ -21,4 +21,6 @@ RUN poetry config virtualenvs.create false && cd / && poetry install
 
 COPY ./app /app
 
+ENV PYTHONPATH=/app
+
 CMD ["uvicorn", "fastapi_api.main:app", "--host", "0.0.0.0", "--port", "8000"]
