@@ -23,6 +23,11 @@ deploy:
   kustomize:
     paths:
       - services/fastapi-api/overlay/development
+    hooks:
+      after:
+        - host:
+            command: [ "sh", "-c", "./scripts/skaffold/post-deploy.sh" ]
+
 portForward:
 - resourceType: service
   namespace: default
