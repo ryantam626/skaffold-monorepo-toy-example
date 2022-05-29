@@ -7,7 +7,7 @@ metadata:
 data:
   SECRET_KEY: 558BGdwZAgW3URgS228BGdwZAgW3URgS
   SENTRY_DSN: ""
-  POSTGRES_SERVER: db
-  POSTGRES_USER: db
-  POSTGRES_PASSWORD: db
-  POSTGRES_DB: db
+  POSTGRES_SERVER: dev-api-postgres
+  POSTGRES_USER: some_user
+  POSTGRES_PASSWORD: somepasswordhere
+  POSTGRES_DB: some_db
