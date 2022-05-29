@@ -7,4 +7,4 @@ if [ -z "$PATHS" ]; then
   PATHS="/app"
 fi
 
-pytest $PATHS -W error::UserWarning
+PYTEST=1 pytest $PATHS -W error::UserWarning

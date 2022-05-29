@@ -1,3 +1,4 @@
+import os
 from typing import Generator
 
 from fastapi_api.db.session import SessionLocal
