@@ -96,3 +96,9 @@ Either you find the pod name yourself and exec bash, or use the following in the
 cd services/fastapi-api
 task dev:shell
 ```
+
+## Install the same python dependencies for IDE's autocomplete
+
+```bash
+poetry export -f requirements.txt --output /tmp/a.txt && pip install -r /tmp/a.txt
+```
