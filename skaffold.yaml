@@ -22,8 +22,8 @@ build:
 deploy:
   kustomize:
     paths:
-      - services/fastapi-api/overlay/development
-      - infra/postgres/overlay/development-api
+      - services/fastapi-api/k8s/overlay/development
+      - infra/postgres/k8s/overlay/development-api
     hooks:
       after:
         - host:
@@ -44,7 +44,7 @@ profiles:
     patches:
       - op: replace
         path: /deploy/kustomize/paths/0
-        value: services/fastapi-api/overlay/development-sleep
+        value: services/fastapi-api/k8s/overlay/development-sleep
   - name: no-postgres
     patches:
       - op: delete
