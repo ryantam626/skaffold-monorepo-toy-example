@@ -1,6 +1,21 @@
 {
   "pod-pattern": "dev-fastapi-api-.*",
   "skaffold": {
-    "module": "api"
+    "module": "api",
+    "reverseFileSync": [
+      {
+        "src": "/app",
+        "dst": "services/fastapi-api/app"
+      },
+      {
+        "src": "/pyproject.toml",
+        "dst": "services/fastapi-api/pyproject.toml"
+      },
+      {
+        "src": "/poetry.lock",
+        "dst": "services/fastapi-api/poetry.lock"
+      }
+    ]
   }
 }
+
