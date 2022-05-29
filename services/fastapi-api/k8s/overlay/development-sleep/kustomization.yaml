@@ -3,5 +3,4 @@ resources:
 namePrefix: dev-
 
 patchesStrategicMerge:
-  - volumes.yaml
   - sleep-cmd.yaml

@@ -9,7 +9,7 @@ build:
     context: services/fastapi-api
     sync:
       infer:
-        - 'app'
+        - 'app/**'
     docker:
       dockerfile: Dockerfile
     hooks:
