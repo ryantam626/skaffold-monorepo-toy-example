@@ -27,7 +27,7 @@ def read_reverse_file_sync_spec(devtool_json: Dict[str, Any]) -> Dict[str, str]:
 
 
 def get_pod_name(devtool_json: Dict[str, Any]) -> str:
-    pod_pattern: str = devtool_json["pod-pattern"]
+    pod_pattern: str = devtool_json["podPattern"]
     kubectl_get_pod_proc = subprocess.Popen(
         ["kubectl", "get", "pod"], stdout=subprocess.PIPE
     )

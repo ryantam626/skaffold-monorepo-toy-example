@@ -13,22 +13,22 @@ tasks:
     desc: Obtain a shell in running pod
     interactive: true
     cmds:
-      - POD_PATTERN=$(jq -r '."pod-pattern"' {{.CURDIR}}/devtool.json) {{.DEVTOOLS_DIR}}/pod-exec.sh bash
+      - POD_PATTERN=$(jq -r '."podPattern"' {{.CURDIR}}/devtool.json) {{.DEVTOOLS_DIR}}/pod-exec.sh bash
 
   format:
     desc: Run formatters in running pod
     cmds:
-      - POD_PATTERN=$(jq -r '."pod-pattern"' {{.CURDIR}}/devtool.json) {{.DEVTOOLS_DIR}}/pod-exec.sh /scripts/format.sh
+      - POD_PATTERN=$(jq -r '."podPattern"' {{.CURDIR}}/devtool.json) {{.DEVTOOLS_DIR}}/pod-exec.sh /scripts/format.sh
 
   lint:
     desc: Run linters in running pod
     cmds:
-      - POD_PATTERN=$(jq -r '."pod-pattern"' {{.CURDIR}}/devtool.json) {{.DEVTOOLS_DIR}}/pod-exec.sh /scripts/lint.sh
+      - POD_PATTERN=$(jq -r '."podPattern"' {{.CURDIR}}/devtool.json) {{.DEVTOOLS_DIR}}/pod-exec.sh /scripts/lint.sh
 
   test:
     desc: Run tests in running pod
     cmds:
-      - POD_PATTERN=$(jq -r '."pod-pattern"' {{.CURDIR}}/devtool.json) {{.DEVTOOLS_DIR}}/pod-exec.sh /scripts/test.sh
+      - POD_PATTERN=$(jq -r '."podPattern"' {{.CURDIR}}/devtool.json) {{.DEVTOOLS_DIR}}/pod-exec.sh /scripts/test.sh
 
   sleep:
     desc: Run a infinitely sleeping pod managed by skaffold

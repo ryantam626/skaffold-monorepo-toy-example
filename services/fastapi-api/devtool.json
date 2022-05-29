@@ -1,5 +1,5 @@
 {
-  "pod-pattern": "dev-fastapi-api-.*",
+  "podPattern": "dev-fastapi-api-.*",
   "skaffold": {
     "module": "api",
     "reverseFileSync": [
