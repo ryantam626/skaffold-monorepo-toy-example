@@ -19,6 +19,7 @@ ENV PATH="/root/.local/bin:$PATH"
 COPY poetry.lock* pyproject.toml /
 RUN poetry config virtualenvs.create false && cd / && poetry install
 
+COPY format.sh lint.sh test.sh /scripts/
 COPY ./app /app
 
 ENV PYTHONPATH=/app
