@@ -23,6 +23,7 @@ deploy:
   kustomize:
     paths:
       - services/fastapi-api/overlay/development
+      - infra/postgres/overlay/development-api
     hooks:
       after:
         - host:
@@ -33,6 +34,10 @@ portForward:
   namespace: default
   resourceName: dev-fastapi-api
   port: 8000
+- resourceType: service
+  namespace: default
+  resourceName: dev-api-postgres
+  port: 5432
 
 profiles:
   - name: dev-sleep
@@ -40,3 +45,7 @@ profiles:
       - op: replace
         path: /deploy/kustomize/paths/0
         value: services/fastapi-api/overlay/development-sleep
+  - name: no-postgres
+    patches:
+      - op: delete
+        path: /deploy/kustomize/paths/1
