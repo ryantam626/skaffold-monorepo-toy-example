@@ -7,6 +7,9 @@ build:
   artifacts:
   - image: docker-registry.local:5000/skaffold-monorepo-toy-api
     context: services/fastapi-api
+    sync:
+      infer:
+        - 'app'
     docker:
       dockerfile: Dockerfile
     hooks:
