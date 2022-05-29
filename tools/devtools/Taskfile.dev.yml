@@ -34,3 +34,8 @@ tasks:
     desc: Run a infinitely sleeping pod managed by skaffold
     cmds:
       - cd {{.BASE_DIR}} && skaffold dev -p dev-sleep -m $(jq -r '.skaffold.module' {{.CURDIR}}/devtool.json)
+
+  reverse-file-sync:
+    desc: Reverse file sync from container back into host
+    cmds:
+      - python {{.DEVTOOLS_DIR}}/reverse-file-sync.py --devtool-json={{.CURDIR}}/devtool.json --base-dir={{.BASE_DIR}}
