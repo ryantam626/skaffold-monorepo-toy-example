@@ -1,6 +1,6 @@
-from fastapi_api.db.base_class import Base
-
 from sqlalchemy import Column, Integer, String
+
+from fastapi_api.db.base_class import Base
 
 
 class Item(Base):
