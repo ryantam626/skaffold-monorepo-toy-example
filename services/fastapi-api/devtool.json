@@ -9,11 +9,13 @@
       },
       {
         "src": "/pyproject.toml",
-        "dst": "services/fastapi-api/pyproject.toml"
+        "dst": "services/fastapi-api/pyproject.toml",
+        "whenChanged": true
       },
       {
         "src": "/poetry.lock",
-        "dst": "services/fastapi-api/poetry.lock"
+        "dst": "services/fastapi-api/poetry.lock",
+        "whenChanged": true
       }
     ]
   }

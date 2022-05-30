@@ -1,14 +1,26 @@
+import dataclasses
 import json
 import argparse
+import shutil
 import subprocess
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 BLUE = "\033[1;34;48m"
+GREEN = "\033[1;32;48m"
+YELLOW = "\033[1;33;48m"
 END = "\033[1;37;0m"
+
+
+def success(line: str):
+    print(f"{GREEN}{line}{END}")
 
 
 def info(line: str):
     print(f"{BLUE}{line}{END}")
+
+
+def warning(line: str):
+    print(f"{YELLOW}{line}{END}")
 
 
 def read_devtool_json(filepath: str) -> Dict[str, Any]:
@@ -17,13 +29,28 @@ def read_devtool_json(filepath: str) -> Dict[str, Any]:
     return devtool_json
 
 
-def read_reverse_file_sync_spec(devtool_json: Dict[str, Any]) -> Dict[str, str]:
-    spec = {}
-    skaffold_config = devtool_json["skaffold"]
-    for item in skaffold_config["reverseFileSync"]:
-        spec[item["src"]] = item["dst"]
+@dataclasses.dataclass
+class ReverseFileSyncSpec:
+    src: str
+    dst: str
+    when_changed: bool
 
-    return spec
+    @classmethod
+    def from_dict(cls, d: Dict[str, Any]) -> "ReverseFileSyncSpec":
+        return ReverseFileSyncSpec(
+            src=d["src"],
+            dst=d["dst"],
+            when_changed=d.get("whenChanged", False),
+        )
+
+
+def read_reverse_file_sync_spec(
+    devtool_json: Dict[str, Any]
+) -> List[ReverseFileSyncSpec]:
+    return [
+        ReverseFileSyncSpec.from_dict(item)
+        for item in devtool_json["skaffold"]["reverseFileSync"]
+    ]
 
 
 def get_pod_name(devtool_json: Dict[str, Any]) -> str:
@@ -43,22 +70,63 @@ def get_pod_name(devtool_json: Dict[str, Any]) -> str:
     return pod_name
 
 
-def reverse_file_sync(pod_name: str, spec: Dict[str, str], base_dir: str) -> None:
-    processes = {}
-    for src, dst in spec.items():
-        cp_src = f"{pod_name}:{src}"
-        cp_dst = f"{base_dir}/{dst}"
+def reverse_file_sync_always(
+    pod_name: str, spec: ReverseFileSyncSpec, base_dir: str
+) -> None:
+    cp_src = f"{pod_name}:{spec.src}"
+    cp_dst = f"{base_dir}/{spec.dst}"
 
-        info(f"Copying {cp_src} to {cp_dst}")
+    info(f"Copying {cp_src} to {cp_dst}")
 
-        processes[cp_src, cp_dst] = subprocess.Popen(
-            ["kubectl", "cp", cp_src, cp_dst], stdout=subprocess.PIPE
+    proc = subprocess.Popen(["kubectl", "cp", cp_src, cp_dst], stdout=subprocess.PIPE)
+    proc.communicate()
+    if proc.returncode:
+        raise RuntimeError(f"Failed when copying {cp_src} to {cp_dst}")
+
+
+def revese_file_sync_if_required(
+    pod_name: str, spec: ReverseFileSyncSpec, base_dir: str
+) -> None:
+    cp_src = f"{pod_name}:{spec.src}"
+    tmp_cp_dst = f"/tmp/{base_dir}/{spec.dst}"
+    repo_cp_dst = f"/tmp/{base_dir}/{spec.dst}"
+
+    info(f"Copying {cp_src} to {tmp_cp_dst} to check for changes")
+
+    proc = subprocess.Popen(
+        ["kubectl", "cp", cp_src, tmp_cp_dst], stdout=subprocess.PIPE
+    )
+    proc.communicate()
+    if proc.returncode:
+        raise RuntimeError(f"Failed when copying {cp_src} to {tmp_cp_dst}")
+
+    require_sync = False
+    try:
+        # TODO: Implement something for comparing dirs, I have no use case for this so skipping for now.
+        with open(tmp_cp_dst, "r") as tmp, open(repo_cp_dst, "r") as repo:
+            if tmp.read() != repo.read():
+                require_sync = True
+    except Exception:
+        info(
+            f"Could not check for difference between {tmp_cp_dst} and {repo_cp_dst}, syncing regardless."
         )
+        require_sync = True
 
-    for (src, dst), process in processes.items():
-        process.communicate()
-        if process.returncode:
-            raise RuntimeError(f"Failed when copying from {src} to {dst}")
+    if require_sync:
+        success(f"Copying from {tmp_cp_dst} to {repo_cp_dst}")
+        shutil.copyfile(tmp_cp_dst, repo_cp_dst)
+    else:
+        success(f"Skipping copy from {tmp_cp_dst} to {repo_cp_dst}")
+
+
+def reverse_file_sync(
+    pod_name: str, specs: List[ReverseFileSyncSpec], base_dir: str
+) -> None:
+    for spec in specs:
+        if not spec.when_changed:
+            reverse_file_sync_always(pod_name, spec, base_dir)
+        else:
+            revese_file_sync_if_required(pod_name, spec, base_dir)
 
 
 def main():
