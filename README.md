@@ -102,3 +102,8 @@ task dev:shell
 ```bash
 poetry export -f requirements.txt --output /tmp/a.txt && pip install -r /tmp/a.txt
 ```
+
+
+# TODOs
+
+Reverse file sync unnecessarily prompt rebuild, e.g. run format task in the API service dir, even if nothing has changed it will still rebuild because the poetry.lock and pyporject.toml has "changed" while not being tracked by file sync. Fix is not simply setting file sync on for these two files, because we do want it to rebuild fully when these two files are actually changed (with file sync on this will not happen).
