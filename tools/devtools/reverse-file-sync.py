@@ -23,10 +23,10 @@ def warning(line: str):
     print(f"{YELLOW}{line}{END}")
 
 
-def read_devtool_json(filepath: str) -> Dict[str, Any]:
+def read_devtools_json(filepath: str) -> Dict[str, Any]:
     with open(filepath, "r") as fd:
-        devtool_json = json.load(fd)
-    return devtool_json
+        devtools_json = json.load(fd)
+    return devtools_json
 
 
 @dataclasses.dataclass
@@ -45,16 +45,16 @@ class ReverseFileSyncSpec:
 
 
 def read_reverse_file_sync_spec(
-    devtool_json: Dict[str, Any]
+    devtools_json: Dict[str, Any]
 ) -> List[ReverseFileSyncSpec]:
     return [
         ReverseFileSyncSpec.from_dict(item)
-        for item in devtool_json["skaffold"]["reverseFileSync"]
+        for item in devtools_json["skaffold"]["reverseFileSync"]
     ]
 
 
-def get_pod_name(devtool_json: Dict[str, Any]) -> str:
-    pod_pattern: str = devtool_json["podPattern"]
+def get_pod_name(devtools_json: Dict[str, Any]) -> str:
+    pod_pattern: str = devtools_json["podPattern"]
     kubectl_get_pod_proc = subprocess.Popen(
         ["kubectl", "get", "pod"], stdout=subprocess.PIPE
     )
@@ -131,14 +131,14 @@ def reverse_file_sync(
 
 def main():
     parser = argparse.ArgumentParser(description="Reverse file sync")
-    parser.add_argument("--devtool-json", help="Where the devtool.json is located")
+    parser.add_argument("--devtools-json", help="Where the devtools.json is located")
     parser.add_argument("--base-dir", help="Repo root absolute path")
     args = parser.parse_args()
 
-    devtool_json = read_devtool_json(args.devtool_json)
+    devtools_json = read_devtools_json(args.devtools_json)
 
-    pod_name = get_pod_name(devtool_json)
-    reverse_file_sync_spec = read_reverse_file_sync_spec(devtool_json)
+    pod_name = get_pod_name(devtools_json)
+    reverse_file_sync_spec = read_reverse_file_sync_spec(devtools_json)
 
     reverse_file_sync(pod_name, reverse_file_sync_spec, args.base_dir)
 

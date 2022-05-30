@@ -13,30 +13,30 @@ tasks:
     desc: Obtain a shell in running pod
     interactive: true
     cmds:
-      - POD_PATTERN=$(jq -r '."podPattern"' {{.CURDIR}}/devtool.json) {{.DEVTOOLS_DIR}}/pod-exec.sh bash
+      - POD_PATTERN=$(jq -r '."podPattern"' {{.CURDIR}}/devtools.json) {{.DEVTOOLS_DIR}}/pod-exec.sh bash
 
   format:
     desc: Run formatters in running pod
     cmds:
-      - POD_PATTERN=$(jq -r '."podPattern"' {{.CURDIR}}/devtool.json) {{.DEVTOOLS_DIR}}/pod-exec.sh /scripts/format.sh
+      - POD_PATTERN=$(jq -r '."podPattern"' {{.CURDIR}}/devtools.json) {{.DEVTOOLS_DIR}}/pod-exec.sh /scripts/format.sh
       - task dev:reverse-file-sync
 
   lint:
     desc: Run linters in running pod
     cmds:
-      - POD_PATTERN=$(jq -r '."podPattern"' {{.CURDIR}}/devtool.json) {{.DEVTOOLS_DIR}}/pod-exec.sh /scripts/lint.sh
+      - POD_PATTERN=$(jq -r '."podPattern"' {{.CURDIR}}/devtools.json) {{.DEVTOOLS_DIR}}/pod-exec.sh /scripts/lint.sh
 
   test:
     desc: Run tests in running pod
     cmds:
-      - POD_PATTERN=$(jq -r '."podPattern"' {{.CURDIR}}/devtool.json) {{.DEVTOOLS_DIR}}/pod-exec.sh /scripts/test.sh
+      - POD_PATTERN=$(jq -r '."podPattern"' {{.CURDIR}}/devtools.json) {{.DEVTOOLS_DIR}}/pod-exec.sh /scripts/test.sh
 
   sleep:
     desc: Run a infinitely sleeping pod managed by skaffold
     cmds:
-      - cd {{.BASE_DIR}} && skaffold dev -p dev-sleep -m $(jq -r '.skaffold.module' {{.CURDIR}}/devtool.json)
+      - cd {{.BASE_DIR}} && skaffold dev -p dev-sleep -m $(jq -r '.skaffold.module' {{.CURDIR}}/devtools.json)
 
   reverse-file-sync:
     desc: Reverse file sync from container back into host
     cmds:
-      - python {{.DEVTOOLS_DIR}}/reverse-file-sync.py --devtool-json={{.CURDIR}}/devtool.json --base-dir={{.BASE_DIR}}
+      - python {{.DEVTOOLS_DIR}}/reverse-file-sync.py --devtools-json={{.CURDIR}}/devtools.json --base-dir={{.BASE_DIR}}
